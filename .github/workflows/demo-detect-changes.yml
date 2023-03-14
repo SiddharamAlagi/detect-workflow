@@ -1,0 +1,25 @@
+name: Deploy website
+on:
+  push:
+    branches:
+      - master
+      - main 
+jobs:
+  test:
+    runs-on: ubuntu-latest 
+    steps:
+      - name: Get the code 
+        uses: actions/checkout@v3
+      - name: detect the changes 
+        uses: dorny/paths-filter@v2
+        id: filter
+        with: 
+        filters: |
+          backend:
+            - 'backend/**'
+          frontend:
+            - 'frontend/**'
+      - name: backend tests
+        if: steps.filter.outputs.backend == 'true'
+        run: echo "this is for testing"
+  
